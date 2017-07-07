@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:9.6.2-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+    command: bundle exec puma --config config/puma.rb
+    environment:
+      - RAILS_ENV=development
+      - PORT=3000
+    # env_file: .env
+    volumes:
+      - .:/app
+      - bundle_install:/app/vendor/bundle
+      - bundle:/app/.bundle
+    tty: true
+    stdin_open: true
+    ports:
+      - 3000:3000
+    links:
+      - db
+
+volumes:
+  postgres_data:
+    driver: local
+  bundle_install:
+    driver: local
+  bundle:
+    driver: local
