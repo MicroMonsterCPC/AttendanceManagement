@@ -10,8 +10,7 @@ services:
       context: .
     command: bundle exec ruby app.rb -o 0.0.0.0
     environment:
-      - RAILS_ENV=development
-      - PORT=3000
+      - PORT=4567
     # env_file: .env
     volumes:
       - .:/app
