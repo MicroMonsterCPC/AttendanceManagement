@@ -8,10 +8,9 @@ services:
   web:
     build:
       context: .
-    command: bundle exec puma --config config/puma.rb
+    command: bundle exec ruby app.rb -o 0.0.0.0
     environment:
-      - RAILS_ENV=development
-      - PORT=3000
+      - PORT=4567
     # env_file: .env
     volumes:
       - .:/app
@@ -20,7 +19,7 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - 3000:3000
+      - 4567:4567
     links:
       - db
 

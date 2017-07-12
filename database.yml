@@ -1,0 +1,8 @@
+development:
+  adapter: postgresql
+  encodeing: unicode
+  host: db
+  database: nam_dep
+  username: postgres
+  pool: 20
+  timeout: 15000
