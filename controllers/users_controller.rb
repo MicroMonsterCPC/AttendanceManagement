@@ -1,35 +1,35 @@
 # index
 get '/users' do
   @users = User.all
-  load_template("users/index")
+  haml :"users/index"
 end
 
 # show
-get '/users/:id' do
+get '/users/:id/show' do
   @user = User.find_by(id: params[:id])
-  load_template("users/show")
+  haml :"users/show"
 end
 
 # new
 get '/users/new' do
   @user = User.new
-  load_template("usres/new")
+  haml :"users/new"
 end
 
 post '/users/create' do
-  user = User.new{name: params[:name], uuid: params[:uuid]}
+  user = User.new({name: params[:name], uuid: params[:uuid]})
   if user.save
     @mes = "Success: User Created"
-    else
+  else
     @mes = "Failure: User Created"
   end
-  load_template("assets/message")
+  haml :"assets/message"
 end
 
 # edit
-put '/users/:id/edit' do
+get '/users/:id/edit' do
   @user = User.find_by(id: params[:id])
-  load_template("usres/new")
+  haml :"usres/new"
 end
 
 # update
@@ -40,7 +40,7 @@ put '/users/:id' do
   else
     @mes = "Failure: User Update"
   end
-  load_template("assets/message")
+  haml :"assets/message"
 end
 
 # delete
@@ -50,11 +50,5 @@ delete '/users/:id' do
   else
     @mes = "Failure: User Delete"
   end
-  load_template("assets/message")
-end
-
-private
-
-def load_template(view_file)
-  erb :"#{view_file}", layout: :"layout/layout"
+  haml :"assets/message"
 end
