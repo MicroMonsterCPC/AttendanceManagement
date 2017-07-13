@@ -11,6 +11,14 @@ class Public < Sinatra::Base
     result = User.where(idm: params["idm"]).exists?
     {result: result}.to_json
   end
+
+  post '/last-attend-time' do
+    params = JSON.parse(request.body.read)
+    user_attendance = User.find_by(idm: params["idm"]).attendances.last
+    result = (user_attendance.record_time + 1.minute) < Time.now
+    {result: result}.to_json
+    # falseだったら1分以内にタッチされた
+  end
 end
 
 class Protect < Sinatra::Base
@@ -31,19 +39,24 @@ class Protect < Sinatra::Base
       {stauts: "error"}.to_json
     end
   end
+
   private
 
   def judge(user)
-    if p Date.today > user.attendances.last.record_time
+    unless user.attendances.last
       return 0
     else
-      case user.attendances.last.status
-      when "enter" then
-        return 1
-      when "left" then
+      if Date.today > user.attendances.last.record_time
         return 0
-      else 
-        return 0
+      else
+        case user.attendances.last.status
+        when "enter" then
+          return 1
+        when "left" then
+          return 0
+        else 
+          return 0
+        end
       end
     end
   end
