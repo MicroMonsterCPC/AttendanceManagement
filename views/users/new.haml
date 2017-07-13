@@ -1,5 +1,9 @@
-<form action="/users/create" method="POST">
-  <input type="text" name="name">
-  <input type="number" name="uuid">
-  <input type="submit" value="Create">
-</form>
+%form{ :action => @form_action, :method => "post" }
+  %p
+    Name: 
+    %input{:name => "name", :type => "text", :value => @user.name}
+  %p
+    Uuid: 
+    %input{:name => "uuid", :type => "number", :value => @user.uuid}
+  %p
+    %input{:value => @submit_title, :type => "submit"}

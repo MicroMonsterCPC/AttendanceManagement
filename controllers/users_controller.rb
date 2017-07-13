@@ -12,6 +12,7 @@ end
 
 # new
 get '/users/new' do
+  @form_action, @submit_title = "/users/#{params[:id]}/create", "Create"
   @user = User.new
   haml :"users/new"
 end
@@ -28,12 +29,13 @@ end
 
 # edit
 get '/users/:id/edit' do
+  @form_action, @submit_title = "/users/#{params[:id]}/update", "Update"
   @user = User.find_by(id: params[:id])
-  haml :"usres/new"
+  haml :"users/new"
 end
 
 # update
-put '/users/:id' do
+post '/users/:id/update' do
   user = User.find_by(id: params[:id])
   if user.update( name: params[:name], uuid: params[:uuid])
     @mes = "Success: User Update"
@@ -44,7 +46,7 @@ put '/users/:id' do
 end
 
 # delete
-delete '/users/:id' do
+post '/users/:id/delete' do
   if User.find_by(id: params[:id]).destory
     @mes = "Success: User Delete"
   else
