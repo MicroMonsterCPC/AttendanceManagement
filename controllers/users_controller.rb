@@ -1,13 +1,16 @@
 # index
-get '/users' do
-  @users = User.all
-  haml :"users/index"
-end
+class Public < Sinatra::Base
+  get '/users' do
+    @users = User.all
+    haml :"users/index"
+  end
 
-# show
-get '/users/:id/show' do
-  @user = User.find_by(id: params[:id])
-  haml :"users/show"
+
+  # show
+  get '/users/:id/show' do
+    @user = User.find_by(id: params[:id])
+    haml :"users/show"
+  end
 end
 
 # new
