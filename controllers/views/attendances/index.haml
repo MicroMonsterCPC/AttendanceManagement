@@ -1,0 +1,3 @@
+%h2 Attendance Time Line
+- @attendances.each do |attendance|
+  %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"

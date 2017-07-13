@@ -11,4 +11,6 @@ gem "sinatra"
 gem "sinatra-contrib"
 gem "sinatra-activerecord"
 
+gem "haml"
+
 gem 'pg', '~> 0.18'
