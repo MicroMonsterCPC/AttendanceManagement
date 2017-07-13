@@ -6,6 +6,9 @@
 %h2 Uuid: 
 = @user.idm
 
+- @user.attendances.each do |attendance|
+  %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
+
 %p 
   %a(href="/protect/users/#{@user.id}/edit") User Edit
 
