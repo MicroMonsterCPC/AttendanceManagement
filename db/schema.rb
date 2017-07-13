@@ -16,12 +16,13 @@ ActiveRecord::Schema.define(version: 20170713154730) do
   enable_extension "plpgsql"
 
   create_table "attendances", force: :cascade do |t|
+    t.integer "user_id"
     t.datetime "record_time"
     t.integer "status"
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer "uuid"
+    t.string "idm"
     t.string "name"
   end
 

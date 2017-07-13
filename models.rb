@@ -10,4 +10,9 @@ after do
 end
 
 class User < ActiveRecord::Base 
+  has_many :attendances
+end
+
+class Attendance < ActiveRecord::Base
+  belongs_to :user
 end
