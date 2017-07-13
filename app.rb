@@ -10,18 +10,13 @@ class Public < Sinatra::Base
   get '/' do
     "HelloWorld"
   end
-end
+  end
 
 class Protect < Sinatra::Base
   use Rack::Auth::Basic, "Protected Area" do |username, password|
     username == 'foo' && password == 'bar'
   end
-  # Attendance management
-  post '/attendance-record' do
-    params =  JSON.parse(request.body.read)
-    user = User.find_by(uuid: params["uuid"])
-  end
-  get "/" do
+    get "/" do
     "secret page!"
   end
   get "/admin" do
