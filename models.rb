@@ -11,8 +11,10 @@ end
 
 class User < ActiveRecord::Base 
   has_many :attendances
+  validates :idm, presence: true, uniqueness: true
 end
 
 class Attendance < ActiveRecord::Base
   belongs_to :user
+  enum status: {enter: 0, left: 1}
 end
