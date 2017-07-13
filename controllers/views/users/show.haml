@@ -4,4 +4,10 @@
 = @user.name
 
 %h2 Uuid: 
-= @user.uuid
+= @user.idm
+
+%p 
+  %a(href="/protect/users/#{@user.id}/edit") User Edit
+
+%p
+  %a(href="/protect/users/#{@user.id}/delete") User Delete
