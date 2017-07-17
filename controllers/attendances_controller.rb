@@ -2,7 +2,8 @@ require "date"
 
 class Public < Sinatra::Base
   get '/attendances' do
-    @attendances_user = Attendance.where(record_time: Date.today..Date.tomorrow, status: 0).map(&:user)
+    users = Attendance.where(record_time: Date.today..Date.tomorrow, status: 0).map(&:user)
+    @attendances_users = users.select{ |user| user.attendances.last.status == "enter" }
     haml :"attendances/index"
   end
 end
@@ -21,11 +22,11 @@ class Protect < Sinatra::Base
     if Attendance.where(user: user, record_time: Date.today..Date.tomorrow, status: 1).exists?
       {stauts: "already"}.to_json
     elsif user.attendances.last && (user.attendances.last.record_time + 1.minute) > Time.now
-      {status: "now"}.to_json
+      {status: "early"}.to_json
     else
       p attendance
       if attendance.save
-        {stauts: status}.to_json
+        {stauts: attendance.status}.to_json
       else
         {stauts: "error"}.to_json
       end
