@@ -1,6 +1,7 @@
 require "sinatra"
 require "sinatra/base"
 require "sinatra/reloader"
+require "pry"
 require "json"
 require "./models"
 require "./controllers/users_controller"
