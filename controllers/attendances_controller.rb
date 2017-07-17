@@ -36,6 +36,7 @@ class Protect < Sinatra::Base
   private
 
   def judge(user)
+    # 0 => enter, 1 => left
     unless user.attendances.last
       return 0
     else
