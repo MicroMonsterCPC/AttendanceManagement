@@ -10,6 +10,14 @@ class Public < Sinatra::Base
     @user = User.find_by(id: params[:id])
     haml :"users/show"
   end
+
+  # idmの登録を確認
+  post '/users/exists' do
+    params =  JSON.parse(request.body.read)
+    result = User.where(idm: params["idm"]).exists?
+    {result: result}.to_json
+  end
+
 end
 
 class Protect < Sinatra::Base

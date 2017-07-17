@@ -2,22 +2,9 @@ require "date"
 
 class Public < Sinatra::Base
   get '/attendances' do
-    @attendances = Attendance.all
+    users = Attendance.where(record_time: Date.today..Date.tomorrow, status: 0).map(&:user)
+    @attendances_users = users.select{ |user| user.attendances.last.status == "enter" }
     haml :"attendances/index"
-  end
-  # idmの登録を確認
-  post '/attendances/is-exists-idm' do
-    params =  JSON.parse(request.body.read)
-    result = User.where(idm: params["idm"]).exists?
-    {result: result}.to_json
-  end
-
-  post '/last-attend-time' do
-    params = JSON.parse(request.body.read)
-    user_attendance = User.find_by(idm: params["idm"]).attendances.last
-    result = (user_attendance.record_time + 1.minute) < Time.now
-    {result: result}.to_json
-    # falseだったら1分以内にタッチされた
   end
 end
 
@@ -29,14 +16,20 @@ class Protect < Sinatra::Base
     status = judge(user)
     attendance = Attendance.new(
       user: user,
-      record_time: params["datetime"],
+      record_time: Time.parse(params["datetime"]),
       status: status
     )
-    p attendance
-    if attendance.save
-      {stauts: status}.to_json
+    if Attendance.where(user: user, record_time: Date.today..Date.tomorrow, status: 1).exists?
+      {stauts: "already"}.to_json
+    elsif user.attendances.last && (user.attendances.last.record_time + 1.minute) > Time.now
+      {status: "early"}.to_json
     else
-      {stauts: "error"}.to_json
+      p attendance
+      if attendance.save
+        {stauts: attendance.status}.to_json
+      else
+        {stauts: "error"}.to_json
+      end
     end
   end
 

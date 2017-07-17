@@ -5,6 +5,11 @@ config  = YAML.load_file( './database.yml' )
 ActiveRecord::Base.configurations = config
 ActiveRecord::Base.establish_connection(config["development"])
 
+Time.zone = "Tokyo"
+ActiveRecord::Base.default_timezone = :local
+
+p Time.now
+
 after do
   ActiveRecord::Base.connection.close
 end

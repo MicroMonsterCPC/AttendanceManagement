@@ -14,3 +14,9 @@ gem "sinatra-activerecord"
 gem "haml"
 
 gem 'pg', '~> 0.18'
+
+
+group :development, :test do
+  gem "pry"
+  gem "pry-byebug"
+end
