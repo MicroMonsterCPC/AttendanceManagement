@@ -1,6 +1,7 @@
 # index
 class Public < Sinatra::Base
   get '/users' do
+    binding.pry
     @users = User.all
     haml :"users/index"
   end

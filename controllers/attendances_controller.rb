@@ -2,17 +2,45 @@ require "date"
 
 class Public < Sinatra::Base
   get '/attendances' do
-    users = Attendance.where(record_time: Date.today..Date.tomorrow, status: 0).map(&:user)
-    @attendances_users = users.select{ |user| user.attendances.last.status == "enter" }
+    @attendances_users = Attendance.where(
+      record_time: Date.today..Date.tomorrow, 
+      status: 0
+    ).map(&:user).select{ |user| user.attendances.last.status == "enter" }
     haml :"attendances/index"
+  end
+
+  post '/attendance/user' do
+    params = JSON.parse(request.body.read)
+    if user = User.find_by(idm: params["idm"])
+      else
+    end
   end
 end
 
 class Protect < Sinatra::Base
+
+  # 出席のキャンセル
+  post '/attendances/cancel' do
+    params = JSON.parse(request.body.read)
+    attendance = User.find_by(
+      idm: params["idm"]
+    ).attendances.where(
+      record_time: Date.today..Date.tomorrow, 
+      status: "left"
+    )
+    unless attendance.empty?
+      attendance[0].destroy
+      {status: "OK"}.to_json
+    else
+      {stauts: "NG"}.to_json
+    end
+  end
+
   # 出席の登録
   post '/attendances/create' do
     params =  JSON.parse(request.body.read)
     user = User.find_by(idm: params["idm"])
+    binding.pry
     status = judge(user)
     attendance = Attendance.new(
       user: user,
@@ -24,7 +52,7 @@ class Protect < Sinatra::Base
     elsif user.attendances.last && (user.attendances.last.record_time + 1.minute) > Time.now
       {status: "early"}.to_json
     else
-      p attendance
+      p attendance if settings.development?
       if attendance.save
         {stauts: attendance.status}.to_json
       else
