@@ -2,18 +2,12 @@ require "date"
 
 class Public < Sinatra::Base
   get '/attendances' do
-    @attendances_users = Attendance.where(
-      record_time: Date.today..Date.tomorrow, 
-      status: 0
-    ).map(&:user).select{ |user| user.attendances.last.status == "enter" }
+    @attendances_users = Attendance.users
     haml :"attendances/index"
   end
 
-  post '/attendance/user' do
-    params = JSON.parse(request.body.read)
-    if user = User.find_by(idm: params["idm"])
-    else
-    end
+  get '/attendances.json' do
+    @attendances_users = Attendance.users.to_json
   end
 end
 
@@ -45,16 +39,15 @@ class Protect < Sinatra::Base
       attendance = Attendance.new( user: user, record_time: Time.parse(params["datetime"]), status: status)
       (return {status: "already"}.to_json) if Attendance.where(user: user, record_time: Date.today..Date.tomorrow, status: 1).exists?
       (return {status: "early"}.to_json)   if user.attendances.last && (user.attendances.last.record_time + 1.minute) > Time.now
-      attendance.save ? ( return {status: attendance.status}.to_json) : (return {status: "Error"})
+      attendance.save ? ( return {status: attendance.status}.to_json) : (return {status: "error"})
     end
     {status: "nouser"}.to_json
   end
 
   private
-
   def judge(user)
     # 0 => enter, 1 => left
-      binding.pry
+    binding.pry
     unless user.attendances.last
       return 0
     else
