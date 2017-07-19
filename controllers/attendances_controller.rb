@@ -24,9 +24,9 @@ class Protect < Sinatra::Base
     )
     unless attendance.empty?
       attendance[0].destroy
-      {status: "OK"}.to_json
+      {status: "succeeded"}.to_json
     else
-      {stauts: "NG"}.to_json
+      {stauts: "failed"}.to_json
     end
   end
 

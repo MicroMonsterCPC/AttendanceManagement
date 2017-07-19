@@ -47,12 +47,12 @@ type
 
 #### APIから返却される値
 
-left記録を正常にキャンセルできた場合 **OK**   
-何らかの内部的エラーで削除できなかった場合 **NG**
+left記録を正常にキャンセルできた場合 **succeeded**   
+何らかの内部的エラーで削除できなかった場合 **failed**
 
 ~~~json
 {
-    "stauts": ["OK","NG"]
+    "stauts": ["succeeded","failed"]
 }
 ~~~
 
@@ -60,7 +60,7 @@ type
 
 - status: string
 
-### attendacnes/create(POST)
+### attendances/create(POST)
 
 出席を記録する
 
