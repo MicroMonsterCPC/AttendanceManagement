@@ -21,5 +21,6 @@ end
 
 class Attendance < ActiveRecord::Base
   belongs_to :user
+  scope :users, -> { where(record_time: Date.today..Date.tomorrow,status: 0).map(&:user).select{ |user| user.attendances.last.status == "enter" } }
   enum status: {enter: 0, left: 1}
 end
