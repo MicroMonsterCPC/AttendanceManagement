@@ -7,6 +7,9 @@ class Public < Sinatra::Base
 
   # show
   get '/users/:id/show' do
+    # 出席日数 / 出席必要日数 * 100
+    attendances = User.find_by(id: params["id"]).attendances.where(status: "enter")
+    @attendance_rate = attendances.count / ENV.fetch('REQUIRE_DAYS').to_f * 100
     @user = User.find_by(id: params[:id])
     haml :"users/show"
   end

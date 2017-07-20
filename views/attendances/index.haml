@@ -1,3 +1,14 @@
-%h2 出席者
-- @attendances_users.each do |user|
-  %p= user.name
+%h2 Currently present users(#{@attendances_users.count})
+%table.table.table-sm
+  %thead
+    %tr
+      %th Name:
+      %th Entry Time:
+  %tbody
+    - @attendances_users.each do |user|
+      %tr
+        %td
+          %a(href="/users/#{user.id}/show")= user.name
+        %td
+          %p= user.attendances.last.record_time.strftime("%H:%M:%S")
+

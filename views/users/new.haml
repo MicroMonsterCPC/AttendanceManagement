@@ -1,9 +1,11 @@
+%h2 #{@submit_title} a User
+%hr
 %form{ :action => @form_action, :method => "post" }
   %p
     Name: 
-    %input{:name => "name", :type => "text", :value => @user.name}
+    %input.form-control{:name => "name", :type => "text", :value => @user.name}
   %p
     Uuid: 
-    %input{:name => "idm", :type => "number", :value => @user.idm}
+    %input.form-control{:name => "idm", :type => "text", :value => @user.idm}
   %p
-    %input{:value => @submit_title, :type => "submit"}
+    %input.btn.btn-primary{:value => @submit_title, :type => "submit"}

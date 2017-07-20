@@ -1,16 +1,23 @@
-%h1 UserShow
+%h2 Attendances Record of #{@user.name} 
 
-%h2 Name:
-= @user.name
+%hr
 
-%h2 Uuid: 
-= @user.idm
+%h3 You Have idm
+%strong.detail= @user.idm
 
-- @user.attendances.each do |attendance|
-  %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
+%h3 Your attendance rate
+%strong.detail= @attendance_rate
 
-%p 
-  %a(href="/protect/users/#{@user.id}/edit") User Edit
+%div.panel.panel-default
+  %div.panel-heading History(Latest 6 cases)
+  %div.panel-body
+    -# %p 
+  %table.table
+    - @user.attendances.last(6).each do |attendance|
+      %tr
+        %td
+          %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
 
-%p
-  %a(href="/protect/users/#{@user.id}/delete") User Delete
+
+%a.btn.btn-success(href="/protect/users/#{@user.id}/edit") UserEdit
+%a.btn.btn-danger(href="/protect/users/#{@user.id}/delete") UserDelete
