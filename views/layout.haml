@@ -1,0 +1,31 @@
+!!!
+
+%html
+  %head
+    %title 出席管理  
+    %link{:rel => 'stylesheet', :href => "/css/drawer.min.css", :type => 'text/css'}  
+    %meta{:"http-equiv"=>"Content-Type", :content=>"text/html", :charset=>"utf-8"}
+  %body.drawer.drawer--left
+    %header{:role => "banner"}
+      %button.drawer-toggle.drawer-hamburger{:type => "button"}
+        %span.sr-only toggle navigation
+        %span.drawer-hamburger-icon
+      %nav.drawer-nav{:role => "navigation"} 
+        %ul.drawer-menu 
+          %li 
+            %a(href="/users") Users
+          %li 
+            %a(href="/attendances/") Attendanaces
+    %main{:role => "main"}
+      != yield
+
+    %script{:type => 'text/javascript', :src => "/js/drawer.min.js"}  
+    -# %script{:crossorigin => "anonymous", :integrity => "sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=", :src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"}
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"}  
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.js"}  
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"}  
+    %script{:charset => "utf-8", :src => "/js/drawer.min.js"}
+    :javascript
+      $(document).ready(function() {
+          $('.drawer').drawer();
+      });
