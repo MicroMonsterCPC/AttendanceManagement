@@ -4,8 +4,13 @@ require "sinatra/reloader"
 require "pry"
 require "json"
 require "./models"
+require './config/config'
 require "./controllers/users_controller"
 require "./controllers/attendances_controller"
+
+not_found do
+  {error: 404}.to_json
+end
 
 class Public < Sinatra::Base
   # HOME 
