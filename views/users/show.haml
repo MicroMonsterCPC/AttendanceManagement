@@ -1,0 +1,23 @@
+%h2 Attendances Record of #{@user.name} 
+
+%hr
+
+%h3 You Have idm
+%strong.detail= @user.idm
+
+%h3 Your attendance rate
+%strong.detail= @attendance_rate
+
+%div.panel.panel-default
+  %div.panel-heading History(Latest 6 cases)
+  %div.panel-body
+    -# %p 
+  %table.table
+    - @user.attendances.last(6).each do |attendance|
+      %tr
+        %td
+          %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
+
+
+%a.btn.btn-success(href="/protect/users/#{@user.id}/edit") UserEdit
+%a.btn.btn-danger(href="/protect/users/#{@user.id}/delete") UserDelete

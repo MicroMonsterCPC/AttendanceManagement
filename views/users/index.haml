@@ -1,0 +1,13 @@
+%h1 UserIndexPage
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th name:
+      %th Last attendance date:
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td
+          %a(href="users/#{user.id}/show")=user.name 
+        %td #{user.attendances.last.record_time.strftime("%Y年%m月%d日")}

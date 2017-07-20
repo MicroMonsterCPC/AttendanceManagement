@@ -1,0 +1,43 @@
+!!!
+
+%html
+  %head
+    %title 出席管理  
+    %link{:rel => 'stylesheet', :href => "/css/base.css", :type => 'text/css'}  
+    %link{:rel => 'stylesheet', :href => "/css/drawer.min.css", :type => 'text/css'}  
+    %meta{:"http-equiv"=>"Content-Type", :content=>"text/html", :charset=>"utf-8"}
+    / Latest compiled and minified CSS
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :integrity => "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", :rel => "stylesheet"}/
+    / Optional theme
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css", :integrity => "sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp", :rel => "stylesheet"}/
+    / Latest compiled and minified JavaScript
+    %script{:crossorigin => "anonymous", :integrity => "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+
+  %body.drawer.drawer--left
+    %header{:role => "banner"}
+      %button.drawer-toggle.drawer-hamburger{:type => "button"}
+        %span.sr-only toggle navigation
+        %span.drawer-hamburger-icon
+      %nav.drawer-nav{:role => "navigation"} 
+        %ul.drawer-menu 
+          %li 
+            %a.drawer-dropdown-menu-item(href="/attendances/") Attendanaces
+          %li.drawer-dropdown
+            %a.drawer-menu-item{"aria-expanded" => "false", "data-target" => "#", "data-toggle" => "dropdown", :href => "#", :role => "button"} User ▼
+            %ul.drawer-dropdown-menu
+              %li 
+                %a.drawer-dropdown-menu-item(href="/users") Users
+              %li
+                %a.drawer-dropdown-menu-item{:href => "/protect/users/new"} UserCreate
+
+    %main{:role => "main"}
+      != yield
+
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"}  
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.js"}  
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"}  
+    %script{:charset => "utf-8", :src => "/js/drawer.min.js"}
+    :javascript
+      $(document).ready(function() {
+        $('.drawer').drawer();
+      });

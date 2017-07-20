@@ -2,7 +2,7 @@
 
 ## API
 
-### attendances.json(GET)
+### attendances/json(GET)
 出席している人の名前を返す
 
 ~~~json

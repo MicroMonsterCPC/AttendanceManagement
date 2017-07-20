@@ -1,13 +1,13 @@
 require "date"
 
 class Public < Sinatra::Base
-  get '/attendances' do
-    @attendances_users = Attendance.users
-    haml :"attendances/index"
-  end
-
-  get '/attendances.json' do
-    @attendances_users = Attendance.users.to_json
+  get '/attendances/:format?' do
+    unless params["format"]
+      @attendances_users = Attendance.users
+      haml :"attendances/index"
+    else
+      Attendance.users.to_json
+    end
   end
 end
 
@@ -47,7 +47,6 @@ class Protect < Sinatra::Base
   private
   def judge(user)
     # 0 => enter, 1 => left
-    binding.pry
     unless user.attendances.last
       return 0
     else
