@@ -8,9 +8,16 @@ class Public < Sinatra::Base
   # show
   get '/users/:id/show' do
     # 出席日数 / 出席必要日数 * 100
-    attendances = User.find_by(id: params["id"]).attendances.where(status: "enter")
-    @attendance_rate = attendances.count / ENV.fetch('REQUIRE_DAYS').to_f * 100
-    @user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params["id"])
+    user_attendances = @user.attendances
+
+    @attendance_status = []
+    user_attendances.each do |attendance|
+      @attendance_status << attendance.status_before_type_cast
+    end
+
+    @attendance_dates = user_attendances.map(&:record_time).map(&:to_s)
+    @attendance_rate = @user.attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100
     haml :"users/show"
   end
 

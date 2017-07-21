@@ -8,16 +8,48 @@
 %h3 Your attendance rate
 %strong.detail= @attendance_rate
 
+%br
+%br
+%br
+
 %div.panel.panel-default
   %div.panel-heading History(Latest 6 cases)
-  %div.panel-body
-    -# %p 
-  %table.table
-    - @user.attendances.last(6).each do |attendance|
-      %tr
-        %td
-          %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
+%div.panel-body
+  -# %p 
+%table.table
+  - @user.attendances.last(6).each do |attendance|
+    %tr
+      %td
+        %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
 
+%canvas#myChart
+%p 
+  *1.0は退出0.0は入室
 
 %a.btn.btn-success(href="/protect/users/#{@user.id}/edit") UserEdit
 %a.btn.btn-danger(href="/protect/users/#{@user.id}/delete") UserDelete
+
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"}
+:javascript
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var labels_data = #{@attendance_dates};
+  var datas = #{@attendance_status};
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: labels_data,
+          datasets: [{
+            label: "Attendance Rate",
+              backgroundColor: 'rgb(255, 99, 132)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: datas,
+          }]
+      },
+
+      // Configuration options go here
+      options: {}
+  });
+
