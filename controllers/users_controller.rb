@@ -10,13 +10,15 @@ class Public < Sinatra::Base
     # 出席日数 / 出席必要日数 * 100
     @user = User.find_by(id: params["id"])
     user_attendances = @user.attendances
-
-    @attendance_status = []
-    user_attendances.each do |attendance|
-      @attendance_status << attendance.status_before_type_cast
+    @attendance_dates, @attendance_status = [], []
+    ((Date.today - 7.days)..(Date.today)).each do |date|
+      @attendance_dates << date.to_time.strftime("%Y/%m/%d")
+      unless user_attendances.where(record_time: ((date.to_time)..(date + 1.days).to_time)).empty?
+        @attendance_status << 1
+      else
+        @attendance_status << 0
+      end
     end
-
-    @attendance_dates = user_attendances.map(&:record_time).map(&:to_s)
     @attendance_rate = @user.attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100
     haml :"users/show"
   end

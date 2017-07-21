@@ -13,11 +13,11 @@
 %br
 
 %div.panel.panel-default
-  %div.panel-heading History(Latest 6 cases)
+  %div.panel-heading History(Latest 7 cases)
 %div.panel-body
   -# %p 
 %table.table
-  - @user.attendances.last(6).each do |attendance|
+  - @user.attendances.last(7).each do |attendance|
     %tr
       %td
         %p= "#{attendance.status}: #{attendance.user.name} #{attendance.record_time.strftime('%Y/%m/%d %H:%M:%S')}"
@@ -35,21 +35,19 @@
   var labels_data = #{@attendance_dates};
   var datas = #{@attendance_status};
   var chart = new Chart(ctx, {
-    // The type of chart we want to create
       type: 'line',
-
-      // The data for our dataset
       data: {
         labels: labels_data,
           datasets: [{
             label: "Attendance Rate",
-              backgroundColor: 'rgb(255, 99, 132)',
-              borderColor: 'rgb(255, 99, 132)',
-              data: datas,
+            bezierCurve : false,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: datas,
+            //fill: true
           }]
       },
-
-      // Configuration options go here
-      options: {}
+      options: {
+      }
   });
 
