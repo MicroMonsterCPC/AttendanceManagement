@@ -10,3 +10,7 @@ header {
   font-size: x-large;
   margin-left: 3em;
 }
+
+.drawer-nav {
+  font-size: large;
+}
