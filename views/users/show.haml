@@ -24,7 +24,7 @@
 
 %canvas#myChart
 %p 
-  *1.0は退出0.0は入室
+  * 1.0は出席した日, 0.0は欠席した日(祝日も含まれる)
 
 %a.btn.btn-success(href="/protect/users/#{@user.id}/edit") UserEdit
 %a.btn.btn-danger(href="/protect/users/#{@user.id}/delete") UserDelete
@@ -32,19 +32,21 @@
 %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"}
 :javascript
   var ctx = document.getElementById('myChart').getContext('2d');
-  var labels_data = #{@attendance_dates};
-  var datas = #{@attendance_status};
   var chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: labels_data,
+        labels: #{@attendance_dates},
           datasets: [{
-            label: "Attendance Rate",
+            label: "Attendance rate this week",
             bezierCurve : false,
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: datas,
-            //fill: true
+            data: #{@attendance_status},
+            fill: false,
+          },{
+            label: "Attendance rate of last month",
+            borderColor: 'rgb(84,77,203)',
+            data: #{@attendance_status_1month_ago}
           }]
       },
       options: {
