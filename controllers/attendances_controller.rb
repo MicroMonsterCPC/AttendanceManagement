@@ -26,7 +26,7 @@ class Protect < Sinatra::Base
       attendance[0].destroy
       {status: "succeeded"}.to_json
     else
-      {stauts: "failed"}.to_json
+      {status: "failed"}.to_json
     end
   end
 
