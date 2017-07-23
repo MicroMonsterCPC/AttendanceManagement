@@ -11,25 +11,17 @@ class Public < Sinatra::Base
     @user = User.find_by(id: params["id"])
     user_attendances = @user.attendances
 
-    @attendance_dates, 
-      @attendance_status, 
-      @attendance_status_1month_ago = [], [], []
-    ((Date.today - 7.days)..(Date.today)).each do |date|
+    @attendance_dates, @attendance_status, @attendance_status_1month_ago = [], [], []
+
+    ((Date.today - 28.days)..(Date.today)).each do |date|
       @attendance_dates << date.to_time.strftime("%d日")
-      unless user_attendances.where(record_time: ((date.to_time)..(date + 1.days).to_time)).empty?
-        @attendance_status << 1
-      else
-        @attendance_status << 0
-      end
-      c_date = date << 1
-      unless user_attendances.where(record_time: ((c_date.to_time)..(c_date + 1.days).to_time)).empty?
-        @attendance_status_1month_ago << 1
-        else
-        @attendance_status_1month_ago << 0
+      unless user_attendances.empty?
+        @attendance_status << ( attendances_status(user_attendances, date) ? 1 : 0 )
+        @attendance_status_1month_ago << (attendances_status(user_attendances, date << 1) ? 1 : 0 )
       end
     end
-    
-    @attendance_rate = @user.attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100
+
+    @attendance_rate = user_attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100
     haml :"users/show"
   end
 
@@ -38,6 +30,16 @@ class Public < Sinatra::Base
     params =  JSON.parse(request.body.read)
     result = User.where(idm: params["idm"]).exists?
     {result: result}.to_json
+  end
+
+  private
+
+  def attendances_status(user_attendances, date)
+    unless user_attendances.where(record_time: ((date.to_time)..(date + 1.days).to_time)).empty?
+      return true
+    else
+      return false
+    end
   end
 
 end
