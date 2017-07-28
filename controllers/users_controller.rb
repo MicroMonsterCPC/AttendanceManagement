@@ -21,15 +21,8 @@ class Public < Sinatra::Base
       end
     end
 
-    @attendance_rate = user_attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100
+    @attendance_rate = (user_attendances.where(status: "enter").count / ENV.fetch('REQUIRE_DAYS').to_f * 100)
     haml :"users/show"
-  end
-
-  # idmの登録を確認
-  post '/users/exists' do
-    params =  JSON.parse(request.body.read)
-    result = User.where(idm: params["idm"]).exists?
-    {result: result}.to_json
   end
 
   private
@@ -85,7 +78,7 @@ class Protect < Sinatra::Base
 
   # delete
   get '/users/:id/delete' do
-    if User.find_by(id: params[:id]).destory
+    if User.find_by(id: params[:id]).destroy!
       @mes = "Success: User Delete"
     else
       @mes = "Failure: User Delete"
